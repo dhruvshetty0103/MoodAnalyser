@@ -1,6 +1,5 @@
 package com.moody.moodanalyser;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,31 +8,49 @@ public class MoodAnalyserTest
 	
 	@Test
 	/*Method to check if 
-	 * sentence contains word sad
+	 * sentance contains word sad
 	 */
-	public void sadCheck() 
-	{
+	public void sadCheck()  {
 		MoodAnalyser moodAnalyser = new MoodAnalyser("This is sad message");
-		String mood = moodAnalyser.analyseMood();
-		Assert.assertThat(mood,CoreMatchers.is("SAD"));
+		String mood;
+		try {
+			mood = moodAnalyser.analyseMood();
+			Assert.assertEquals("SAD",mood);
+		} catch (MoodAnalyserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/*Method to check if 
-	 * sentence contains word happy
+	 * sentance contains word happy
 	 */
 	@Test
 	public void happyCheck() 
 	{
 		MoodAnalyser moodAnalyser = new MoodAnalyser("This is a happy message");
-		String mood = moodAnalyser.analyseMood();
-		Assert.assertThat(mood,CoreMatchers.is("HAPPY"));
+		String mood;
+		try 
+		{
+			mood = moodAnalyser.analyseMood();
+			Assert.assertEquals("HAPPY",mood);
+		} 
+		catch (MoodAnalyserException e) 
+		{
+			e.printStackTrace();
+		}
 	}
+	
 	@Test
-	public void givenNullMoodShouldReturnHappy() 
+	public void givenMoodNullShouldHandleException()  
 	{
-		MoodAnalyser moodAnalyser = new MoodAnalyser(null);
-		String mood = moodAnalyser.analyseMood();
-		Assert.assertThat(mood,CoreMatchers.is("HAPPY"));
+		MoodAnalyser moodAnalyser = new MoodAnalyser();
+		try 
+		{
+			moodAnalyser.analyseMood(null);	
+		} catch (MoodAnalyserException e) 
+		{
+			Assert.assertEquals("Please enter non empty message", e.getMessage());
+		}
 	}
-
 }
